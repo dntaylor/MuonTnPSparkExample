@@ -124,25 +124,34 @@ def get_pileup(resonance,era,subEra):
     
     return pileup_ratio, pileup_edges
 
-def get_tag_dataframe(df,resonance,era,subEra):
+def get_tag_dataframe(df,resonance,era,subEra,shift=None):
     '''
     Produces a dataframe reduced by the default tag selection used by the Muon POG
+    The optional shift parameter will change the tag for systematic uncertainties.
     '''
     if resonance=='Z':
         if '2017' in era:
-            tag_sel = 'tag_pt>29 and tag_abseta<2.4 and tag_IsoMu27==1 and tag_combRelIsoPF04dBeta<0.2 and pair_probeMultiplicity==1'
+            tag_sel = 'tag_pt>29 and tag_abseta<2.4 and tag_IsoMu27==1 and pair_probeMultiplicity==1'
         else:
-            tag_sel = 'tag_pt>26 and tag_abseta<2.4 and tag_IsoMu24==1 and tag_combRelIsoPF04dBeta<0.2 and pair_probeMultiplicity==1'
+            tag_sel = 'tag_pt>26 and tag_abseta<2.4 and tag_IsoMu24==1 and pair_probeMultiplicity==1'
+        if shift == 'TagIsoUp':
+            tag_sel = tag_sel + ' and tag_combRelIsoPF04dBeta<0.3'
+        elif shift == 'TagIsoDown':
+            tag_sel = tag_sel + ' and tag_combRelIsoPF04dBeta<0.1'
+        else:
+            tag_sel = tag_sel + ' and tag_combRelIsoPF04dBeta<0.2'
 
     return df.filter(tag_sel)
 
-def get_weighted_dataframe(df,doGen,resonance,era,subEra):
+def get_weighted_dataframe(df,doGen,resonance,era,subEra,shift=None):
     '''
     Produces a dataframe with a weight and weight2 column with weight corresponding to:
         1 for data
     or
         pileup for mc
+    The optional shift parameter allows for a different systematic shift to the weights
     '''
+    # TODO: implement any systematic shifts in the weight such as PDF, pileup, etc.
     # get the pileup
     pileup_ratio, pileup_edges = get_pileup(resonance,era,subEra)
     
@@ -284,3 +293,4 @@ def get_default_selections_dataframe(df):
         df = df.withColumn(alt_sel_name, df[sel_name])
         
     return df
+
