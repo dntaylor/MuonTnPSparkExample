@@ -11,6 +11,11 @@ More details on CERN's Apache Spark can be found [here](https://hadoop-user-guid
 ## Commandline
 
 There are a couple of ways you can run. Either connect to the edge node or directly on lxplus.
+The jobs are run on spark clusters and the data is read from an hdfs cluster.
+The default (and preferred) way is to use the `analytix` spark and hdfs cluster.
+You must request access to use this cluster.
+Alternatively, anyone can use the `k8s` spark cluster.
+In this case, you will still read data from the `analytix` hdfs cluster.
 
 ### Edge node
 Connect to the hadoop edge node:
@@ -26,7 +31,7 @@ source /cvmfs/sft.cern.ch/lcg/views/LCG_96bpython3/x86_64-centos7-gcc8-opt/setup
 source hadoop-setconf.sh analytix
 ```
 
-### Lxplus
+### LXPLUS
 
 Setup the environment:
 
@@ -35,7 +40,7 @@ source /cvmfs/sft.cern.ch/lcg/views/LCG_96bpython3/x86_64-centos7-gcc8-opt/setup
 source /cvmfs/sft.cern.ch/lcg/etc/hadoop-confext/hadoop-swan-setconf.sh analytix
 ```
 
-### Lxplus (k8s)
+### LXPLUS (k8s)
 
 In case you do not have permission to submit to the analytix cluster, you can use `k8s`.
 
