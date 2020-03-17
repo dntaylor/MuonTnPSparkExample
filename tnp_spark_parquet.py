@@ -277,6 +277,7 @@ if __name__ == "__main__":
         .getOrCreate()
 
     sc = spark.sparkContext
+    print(sc.getConf().toDebugString())
 
     resonance = 'Z'
     era = 'Run2017_UL'
